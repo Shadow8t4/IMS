@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# OS Detection
+# something like:
+#	cat /etc/os-release | grep ID_LIKE && \
+#		grep (Debian, Arch, RHEL, etc) || \
+#		cat /etc/os-release | grep ID && \
+#			grep (Debian, Arch, RHEL, etc)
+
 # Check before script starts to make sure base16 shell can install correctly.
 if [ ! -e base16_zshrc ]
 	then echo -e "Can't find base16_zshrc"; exit 1;
@@ -8,15 +15,21 @@ fi
 echo -e "This should install all of the things I normally want on a new install."
 
 # List of system packages to install
-PACKAGES=(                  \
-wget                        \
-git                         \
-zsh                         \
-fonts-powerline             \
-util-linux	                \
-neovim                      \
-curl                        \
-software-properties-common  \
+PACKAGES=(                  	\
+	wget                        \
+	git                         \
+	zsh                         \
+	fonts-powerline             \
+	util-linux	                \
+	neovim                      \
+	curl                        \
+	python3						\
+	python3-pip					\
+	python3-dev					\
+	python3-setuptools			\
+	software-properties-common  \
+	default-openjdk				\
+	default-openjre				\
 )
 
 sudo apt install ${PACKAGES[*]} -y
@@ -36,16 +49,8 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 # Grab Asonix's init.vim config
 wget https://raw.githubusercontent.com/asonix/configs/master/init.vim && \
 	mkdir ~/.config/nvim && \
-	mv init.vim ~/.config/nvim/
-
-# Modify new .zshrc and add aliases
-SET_ALIASES=(   \
-vim=nvim        \
-)
-
-for a in ${SET_ALIASES[*]}; do
-	echo -e "alias $a" >> ~/.zshrc
-done
+	mv init.vim ~/.config/nvim/ && \
+	nvim + 'PlugInstall --sync' +qa
 
 # Grab and run Miniconda install script
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
@@ -76,10 +81,67 @@ git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
 # After exit, re-source .zshrc
 #cat ~/.zshrc.pre-oh-my-zsh >> ~/.zshrc
 
+# Install Rust with default settings
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-host $(uname -m)-unknown-linux-gnu --default-toolchain stable -y && \
+	echo export PATH="/home/shadow8t4/.cargo/bin:$PATH" >> ~/.zshrc
+
+# Pre-install VSCode Plugin Prerequistites
+PIP_PLUGINS=(	\
+	pylint		\
+	thefuck		\
+)
+
+sudo pip3 install ${PIP_PLUGINS[*]}
+
+# Install VSCode Plugins
+CODE_PLUGINS=(							\
+	donjayamanne.python-extension-pack	\
+	ms-vscode.cpptools					\
+	vscjava.vscode-java-debug			\
+	andrsdc.base16-themes				\
+	abusaidm.html-snippets				\
+	ecmel.vscode-html-css				\
+	xabikos.javascriptsnippets			\
+	rust-lang.rust						\
+)
+
+for p in ${CODE_PLUGINS[*]}; do
+	code --install-extension $p
+done
+
+# Set Python default link to python3
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 && \
+	sudo update-alternatives --install /usr/bin/python python /usr/bin/python2 2 && \
+	sudo update-alternatives --set python /usr/bin/python3
+
+# Add thefuck alias
+echo -e "eval $(thefuck --alias)" >> ~/.zshrc
+
+# Modify new .zshrc and add aliases
+SET_ALIASES=(   \
+	vim=nvim    \
+	pip=pip3	\
+)
+
+for a in ${SET_ALIASES[*]}; do
+	echo -e "alias $a" >> ~/.zshrc
+done
+
+# Set base16_eighties theme for zsh shell
+echo -e "[ \$BASE16_THEME = \"base16-eighties\" ] && : || source ~/.config/base16-shell/scripts/base16-eighties" >> ~/.zshrc
+
+# Change .zshrc plugin settings & theme
+ZSH_PLUGINS=(	\
+	git			\
+	ssh-agent	\
+)
+
+sed -E -i -e "s/^plugins=\(([A-Za-z, \+\n\t\\\-])+\)$/plugins=($ZSH_PLUGINS)/gm" ~/.zshrc
+# Write regex sed command to change theme later, go to bed.
+
+# Instructions for after the script
 printf \
 "Everything should be installed!\n\
 Make sure to do the following to finish up:\n\
 - Log out and log back in\n\
-- type \"base16_eighties\" in a new terminal\n\
-- edit the ~/.config/nvim/init.vim file and :PlugInstall\n\
 - edit the ~/.zshrc settings\n"
