@@ -51,9 +51,11 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 
 # Grab Asonix's init.vim config
 wget https://raw.githubusercontent.com/asonix/configs/master/init.vim && \
+	sed -i -e "/colorscheme base16-mocha/d" && \
 	mkdir ~/.config/nvim && \
 	mv init.vim ~/.config/nvim/ && \
-	nvim + 'PlugInstall --sync' +qa
+	nvim -c 'PlugInstall --sync' +qa && \
+	echo -e 'colorscheme base16-eighties' >> ~/.config/nvim/init.vim
 
 # Grab and run Miniconda install script
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
