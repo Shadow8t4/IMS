@@ -14,6 +14,9 @@ fi
 
 echo -e "***** START OF SCRIPT *****\n\nThis should install all of the things I normally want on a new install.\n\n"
 
+# Run an update first
+sudo apt update && sudo apt upgrade -y
+
 # List of system packages to install
 PACKAGES=(                  	\
 	wget                        \
