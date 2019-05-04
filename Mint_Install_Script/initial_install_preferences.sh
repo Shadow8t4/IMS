@@ -12,7 +12,7 @@ if [ ! -e base16_zshrc ]
 	then echo -e "Can't find base16_zshrc"; exit 1;
 fi
 
-echo -e "This should install all of the things I normally want on a new install."
+echo -e "***** START OF SCRIPT *****\n\nThis should install all of the things I normally want on a new install.\n\n"
 
 # List of system packages to install
 PACKAGES=(                  	\
@@ -69,17 +69,12 @@ curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microso
     rm microsoft.gpg
 
 # Install Oh-My-Zsh
-#echo -e "Installing Oh-My-Zsh. REMEMBER TO CTRL-D OR EXIT OUT OF SHELL TO FINISH SCRIPT"
-#sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
 	mv ~/.zshrc ~/.zshrc.old && \
 	cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc && \
 	cat ~/.zshrc.old >> ~/.zshrc && \
 	rm ~/.zshrc.old && \
 	chsh -s /bin/zsh
-
-# After exit, re-source .zshrc
-#cat ~/.zshrc.pre-oh-my-zsh >> ~/.zshrc
 
 # Install Rust with default settings
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-host $(uname -m)-unknown-linux-gnu --default-toolchain stable -y && \
@@ -130,18 +125,23 @@ done
 # Set base16_eighties theme for zsh shell
 echo -e "[ \$BASE16_THEME = \"base16-eighties\" ] && : || source ~/.config/base16-shell/scripts/base16-eighties" >> ~/.zshrc
 
-# Change .zshrc plugin settings & theme
+# Change .zshrc plugin settings
 ZSH_PLUGINS=(	\
 	git			\
 	ssh-agent	\
 )
 
 sed -E -i -e "s/^plugins=\(([A-Za-z, \+\n\t\\\-])+\)$/plugins=($ZSH_PLUGINS)/gm" ~/.zshrc
-# Write regex sed command to change theme later, go to bed.
+
+# Change .zshrc zsh theme
+sed -E -i -e "s/ZSH_THEME=\"([A-Za-z]+)\"/ZSH_THEME=\"agnoster\"/g" ~/.zshrc
+
+# Uncomment the preferred editor and set it.
+sed -E -i -e "/^(\!?#)([[:blank:]]+(export EDITOR='[[:alpha:]]+'|if \[\[ -n [$]SSH_CONNECTION ]]; then|else|fi))/d" ~/.zshrc && \ 
+	sed -E -i -e "s/# Preferred editor for local and remote sessions/# Preferred editor for local and remote sessions\nif \[\[ -n \$SSH_CONNECTION \]\]; then\n  export EDITOR=\'vim\'\nelse\n  export EDITOR=\'mvim\'\nfi/gm" ~/.zshrc
 
 # Instructions for after the script
 printf \
-"Everything should be installed!\n\
-Make sure to do the following to finish up:\n\
-- Log out and log back in\n\
-- edit the ~/.zshrc settings\n"
+"\n\nEverything should be installed!\n\
+Make sure to log out and log back in to finish up.\n\n\
+***** END OF SCRIPT *****"
