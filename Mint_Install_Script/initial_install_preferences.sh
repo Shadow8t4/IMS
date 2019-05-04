@@ -43,12 +43,11 @@ git config --global user.email "adh9694@gmail.com"
 
 # Install Base16-Shell
 git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell && \
-	printf \
-	"# Base16 Shell \n\
-	BASE16_SHELL=\"\$HOME/.config/base16-shell/\" \n\
-	[ -n \"\$PS1\" ] && \\ \n\
-		[ -s \"\$BASE16_SHELL/profile_helper.sh\" ] && \\ \n\
-			eval \"\$(\"\$BASE16_SHELL/profile_helper.sh\")\" \n" >> ~/.zshrc
+printf "# Base16 Shell\n\
+BASE16_SHELL=\"\$HOME/.config/base16-shell/\"\n\
+	[ -n \"\$PS1\" ] && \
+		[ -s \"\$BASE16_SHELL/profile_helper.sh\" ] && \
+			eval \"\$(\"\$BASE16_SHELL/profile_helper.sh\")\"\n" >> ~/.zshrc
 
 # Install Vim-Plugged for NeoVim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
@@ -147,7 +146,7 @@ sed -E -i -e "s/^plugins=\(([A-Za-z, \+\n\t\\\-])+\)$/plugins=(${ZSH_PLUGINS[*]}
 sed -E -i -e "s/ZSH_THEME=\"([A-Za-z]+)\"/ZSH_THEME=\"agnoster\"/g" ~/.zshrc
 
 # Uncomment the preferred editor and set it.
-sed -E -i -e "/^(\!?#)([[:blank:]]+(export EDITOR='[[:alpha:]]+'|if \[\[ -n [$]SSH_CONNECTION ]]; then|else|fi))/d" ~/.zshrc && \ 
+sed -E -i -e "/^(\!?#)([[:blank:]]+(export EDITOR='[[:alpha:]]+'|if \[\[ -n [$]SSH_CONNECTION ]]; then|else|fi))/d" ~/.zshrc &&\
 	sed -E -i -e "s/# Preferred editor for local and remote sessions/# Preferred editor for local and remote sessions\nif \[\[ -n \$SSH_CONNECTION \]\]; then\n  export EDITOR=\'vim\'\nelse\n  export EDITOR=\'mvim\'\nfi/gm" ~/.zshrc
 
 # End of script
