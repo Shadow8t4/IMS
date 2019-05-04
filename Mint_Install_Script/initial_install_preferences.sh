@@ -72,7 +72,7 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
 	sudo chmod +x Miniconda3-latest-Linux-x86_64.sh && \
 	./Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda3 && \
 	rm Miniconda3-latest-Linux-x86_64.sh && \
-	echo -e "source /home/shadow8t4/miniconda3/etc/profile.d/conda.sh" >> ~/.zshrc
+	echo -e "source ~/miniconda3/etc/profile.d/conda.sh" >> ~/.zshrc
 
 # Add VSCode Repo and install
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg && \
@@ -97,7 +97,7 @@ sudo sed -E -i -e "s/auth[[:blank:]]+required[[:blank:]]+pam_shells.so/auth\tsuf
 
 # Install Rust with default settings
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-host $(uname -m)-unknown-linux-gnu --default-toolchain stable -y && \
-	echo export PATH="/home/shadow8t4/.cargo/bin:$PATH" >> ~/.zshrc
+	echo export PATH="~/.cargo/bin:$PATH" >> ~/.zshrc
 
 # Pre-install VSCode Plugin Prerequistites
 PIP_PLUGINS=(	\
