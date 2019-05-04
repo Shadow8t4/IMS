@@ -78,12 +78,20 @@ curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microso
     rm microsoft.gpg
 
 # Install Oh-My-Zsh
+
+# First, setup chsh group so we don't get asked for a password
+sudo sed -E -i -e "s/auth[[:blank:]]+required[[:blank:]]+pam_shells.so/auth\tsufficient\tpam_shells.so/g" /etc/pam.d/chsh &&\
+	sudo groupadd chsh &&\
+	sudo usermod -aG chsh $user
+
+# Second, install oh-my-zsh and reset chsh config.
 git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
 	mv ~/.zshrc ~/.zshrc.old && \
 	cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc && \
 	cat ~/.zshrc.old >> ~/.zshrc && \
 	rm ~/.zshrc.old && \
-	chsh -s /bin/zsh
+	chsh -s /bin/zsh && \
+	sudo sed -E -i -e "s/auth[[:blank:]]+sufficient[[:blank:]]+pam_shells.so/auth\trequired\tpam_shells.so/g" /etc/pam.d/chsh
 
 # Install Rust with default settings
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-host $(uname -m)-unknown-linux-gnu --default-toolchain stable -y && \
@@ -119,7 +127,7 @@ sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 && 
 	sudo update-alternatives --set python /usr/bin/python3
 
 # Add thefuck alias
-echo -e "eval $(thefuck --alias)" >> ~/.zshrc
+echo -e "eval \"\$(thefuck --alias)\"" >> ~/.zshrc
 
 # Modify new .zshrc and add aliases
 SET_ALIASES=(	\
