@@ -6,7 +6,10 @@ read FULL_NAME
 echo -n "Input your desired email address for git config: "
 read EMAIL_ADDRESS
 
-# OS Detection
+# TODO: Add more prompts for options, so the whole script doesn't have to be run each time
+# TODO: Add file input or prompts for specific software to be installed
+
+# TODO: OS Detection
 # something like:
 #	cat /etc/os-release | grep ID_LIKE && \
 #		grep (Debian, Arch, RHEL, etc) || \
