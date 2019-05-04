@@ -20,6 +20,7 @@ sudo apt update && sudo apt upgrade -y
 # List of system packages to install
 PACKAGES=(                  	\
 	wget                        \
+	ssh			    \
 	git                         \
 	zsh                         \
 	fonts-powerline             \
@@ -36,6 +37,9 @@ PACKAGES=(                  	\
 )
 
 sudo apt install ${PACKAGES[*]} -y
+
+# Create SSH Key
+ssh-keygen -t ed25519 -a 100 -N -C -f ~/.ssh/id_ed25519
 
 # Set Git Config
 git config --global user.name "Alex Huddleston"
