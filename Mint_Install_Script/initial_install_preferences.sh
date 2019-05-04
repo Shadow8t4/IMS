@@ -35,7 +35,7 @@ PACKAGES=(						\
 sudo apt install ${PACKAGES[*]} -y
 
 # Create SSH Key
-ssh-keygen -t ed25519 -a 100 -N -C -f ~/.ssh/id_ed25519
+ssh-keygen -t ed25519 -a 100 -N "" -f ~/.ssh/id_ed25519
 
 # Set Git Config
 git config --global user.name "Alex Huddleston"
