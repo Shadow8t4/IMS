@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Edit these for your preferences
+# TODO: Make this a prompt at the beginning of the script instead
+$FULL_NAME="Alex Huddleston"
+$EMAIL_ADDRESS="adh9694@gmail.com"
+
 # OS Detection
 # something like:
 #	cat /etc/os-release | grep ID_LIKE && \
@@ -38,8 +43,8 @@ sudo apt install ${PACKAGES[*]} -y
 ssh-keygen -t ed25519 -a 100 -N "" -f ~/.ssh/id_ed25519
 
 # Set Git Config
-git config --global user.name "Alex Huddleston"
-git config --global user.email "adh9694@gmail.com"
+git config --global user.name $FULL_NAME
+git config --global user.email $EMAIL_ADDRESS
 
 # Install Base16-Shell
 git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell && \
@@ -78,14 +83,10 @@ curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microso
     rm microsoft.gpg
 
 # Install Oh-My-Zsh
-
-# First, setup chsh group so we don't get asked for a password
-sudo sed -E -i -e "s/auth[[:blank:]]+required[[:blank:]]+pam_shells.so/auth\tsufficient\tpam_shells.so/g" /etc/pam.d/chsh &&\
-	sudo groupadd chsh &&\
-	sudo usermod -aG chsh $user
-
-# Second, install oh-my-zsh and reset chsh config.
-git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
+sudo sed -E -i -e "s/auth[[:blank:]]+required[[:blank:]]+pam_shells.so/auth\tsufficient\tpam_shells.so/g" /etc/pam.d/chsh && \
+	sudo groupadd chsh && \
+	sudo usermod -aG chsh $user && \
+	git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
 	mv ~/.zshrc ~/.zshrc.old && \
 	cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc && \
 	cat ~/.zshrc.old >> ~/.zshrc && \
