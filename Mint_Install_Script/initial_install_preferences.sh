@@ -8,7 +8,7 @@
 #			grep (Debian, Arch, RHEL, etc)
 
 # Check before script starts to make sure base16 shell can install correctly.
-if [ ! -e ../base16_zshrc ]
+if [ ! -e base16_zshrc ]
 	then echo -e "Can't find base16_zshrc"; exit 1;
 fi
 
@@ -40,7 +40,7 @@ git config --global user.email "adh9694@gmail.com"
 
 # Install Baseh16-Shell
 git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell && \
-	cat ../base16_zshrc >> ~/.zshrc
+	cat base16_zshrc >> ~/.zshrc
 
 # Install Vim-Plugged for NeoVim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
