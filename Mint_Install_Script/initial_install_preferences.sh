@@ -86,7 +86,7 @@ curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microso
 # Install Oh-My-Zsh
 sudo sed -E -i -e "s/auth[[:blank:]]+required[[:blank:]]+pam_shells.so/auth\tsufficient\tpam_shells.so/g" /etc/pam.d/chsh && \
 	sudo groupadd chsh && \
-	sudo usermod -aG chsh $user && \
+	sudo usermod -aG chsh $USER && \
 	git clone https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh && \
 	mv ~/.zshrc ~/.zshrc.old && \
 	cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc && \
