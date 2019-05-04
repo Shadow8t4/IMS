@@ -7,33 +7,29 @@
 #		cat /etc/os-release | grep ID && \
 #			grep (Debian, Arch, RHEL, etc)
 
-# Check before script starts to make sure base16 shell can install correctly.
-if [ ! -e base16_zshrc ]
-	then echo -e "Can't find base16_zshrc"; exit 1;
-fi
-
+# Start of script
 echo -e "***** START OF SCRIPT *****\n\nThis should install all of the things I normally want on a new install.\n\n"
 
 # Run an update first
 sudo apt update && sudo apt upgrade -y
 
 # List of system packages to install
-PACKAGES=(                  	\
-	wget                        \
-	ssh			    \
-	git                         \
-	zsh                         \
-	fonts-powerline             \
-	util-linux	                \
-	neovim                      \
-	curl                        \
+PACKAGES=(						\
+	wget						\
+	ssh							\
+	git							\
+	zsh							\
+	fonts-powerline				\
+	util-linux					\
+	neovim						\
+	curl						\
 	python3						\
 	python3-pip					\
 	python3-dev					\
 	python3-setuptools			\
-	software-properties-common  \
-	default-jdk				\
-	default-jre				\
+	software-properties-common	\
+	default-jdk					\
+	default-jre					\
 )
 
 sudo apt install ${PACKAGES[*]} -y
@@ -45,9 +41,14 @@ ssh-keygen -t ed25519 -a 100 -N -C -f ~/.ssh/id_ed25519
 git config --global user.name "Alex Huddleston"
 git config --global user.email "adh9694@gmail.com"
 
-# Install Baseh16-Shell
+# Install Base16-Shell
 git clone https://github.com/chriskempson/base16-shell.git ~/.config/base16-shell && \
-	cat base16_zshrc >> ~/.zshrc
+	printf \
+	"# Base16 Shell \n\
+	BASE16_SHELL=\"\$HOME/.config/base16-shell/\" \n\
+	[ -n \"\$PS1\" ] && \\ \n\
+		[ -s \"\$BASE16_SHELL/profile_helper.sh\" ] && \\ \n\
+			eval \"\$(\"\$BASE16_SHELL/profile_helper.sh\")\" \n" >> ~/.zshrc
 
 # Install Vim-Plugged for NeoVim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
@@ -122,8 +123,8 @@ sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1 && 
 echo -e "eval $(thefuck --alias)" >> ~/.zshrc
 
 # Modify new .zshrc and add aliases
-SET_ALIASES=(   \
-	vim=nvim    \
+SET_ALIASES=(	\
+	vim=nvim	\
 	pip=pip3	\
 )
 
@@ -149,7 +150,7 @@ sed -E -i -e "s/ZSH_THEME=\"([A-Za-z]+)\"/ZSH_THEME=\"agnoster\"/g" ~/.zshrc
 sed -E -i -e "/^(\!?#)([[:blank:]]+(export EDITOR='[[:alpha:]]+'|if \[\[ -n [$]SSH_CONNECTION ]]; then|else|fi))/d" ~/.zshrc && \ 
 	sed -E -i -e "s/# Preferred editor for local and remote sessions/# Preferred editor for local and remote sessions\nif \[\[ -n \$SSH_CONNECTION \]\]; then\n  export EDITOR=\'vim\'\nelse\n  export EDITOR=\'mvim\'\nfi/gm" ~/.zshrc
 
-# Instructions for after the script
+# End of script
 printf \
 "\n\nEverything should be installed!\n\
 Make sure to log out and log back in to finish up.\n\n\
