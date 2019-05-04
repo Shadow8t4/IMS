@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Edit these for your preferences
-# TODO: Make this a prompt at the beginning of the script instead
-$FULL_NAME="Alex Huddleston"
-$EMAIL_ADDRESS="adh9694@gmail.com"
+echo -n "Input your full name for git config: "
+read FULL_NAME
+echo -n "Input your desired email address for git config: "
+read EMAIL_ADDRESS
 
 # OS Detection
 # something like:
