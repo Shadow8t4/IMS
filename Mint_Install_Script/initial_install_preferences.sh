@@ -140,7 +140,7 @@ ZSH_PLUGINS=(	\
 	ssh-agent	\
 )
 
-sed -E -i -e "s/^plugins=\(([A-Za-z, \+\n\t\\\-])+\)$/plugins=($ZSH_PLUGINS)/gm" ~/.zshrc
+sed -E -i -e "s/^plugins=\(([A-Za-z, \+\n\t\\\-])+\)$/plugins=(${ZSH_PLUGINS[*]})/gm" ~/.zshrc
 
 # Change .zshrc zsh theme
 sed -E -i -e "s/ZSH_THEME=\"([A-Za-z]+)\"/ZSH_THEME=\"agnoster\"/g" ~/.zshrc
