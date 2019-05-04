@@ -55,7 +55,7 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 
 # Grab Asonix's init.vim config
 wget https://raw.githubusercontent.com/asonix/configs/master/init.vim && \
-	sed -i -e "/colorscheme base16-mocha/d" && \
+	sed -i -e "/colorscheme base16-mocha/d" init.vim && \
 	mkdir ~/.config/nvim && \
 	mv init.vim ~/.config/nvim/ && \
 	nvim -c 'PlugInstall --sync' +qa && \
