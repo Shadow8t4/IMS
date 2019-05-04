@@ -126,7 +126,7 @@ for a in ${SET_ALIASES[*]}; do
 done
 
 # Set base16_eighties theme for zsh shell
-echo -e "[ \$BASE16_THEME = \"base16-eighties\" ] && : || source ~/.config/base16-shell/scripts/base16-eighties" >> ~/.zshrc
+echo -e "[ '\$BASE16_THEME' '==' 'base16-eighties' ] && : || source ~/.config/base16-shell/scripts/base16-eighties.sh" >> ~/.zshrc
 
 # Change .zshrc plugin settings
 ZSH_PLUGINS=(	\
@@ -147,4 +147,4 @@ sed -E -i -e "/^(\!?#)([[:blank:]]+(export EDITOR='[[:alpha:]]+'|if \[\[ -n [$]S
 printf \
 "\n\nEverything should be installed!\n\
 Make sure to log out and log back in to finish up.\n\n\
-***** END OF SCRIPT *****"
+***** END OF SCRIPT *****\n"
